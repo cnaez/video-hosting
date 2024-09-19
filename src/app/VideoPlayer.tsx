@@ -2,16 +2,16 @@
 
 import { useState, useRef, useEffect } from "react";
 import { BsFillPlayCircleFill } from "react-icons/bs";
-import { ImSpinner2 } from "react-icons/im"; // For loading spinner
+import { ImSpinner2 } from "react-icons/im";
 
 const VideoPlayer = () => {
   const [showVideo, setShowVideo] = useState(false);
-  const [isLoading, setIsLoading] = useState(true); // Page loading state
+  const [isLoading, setIsLoading] = useState(true);
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   useEffect(() => {
     if (videoRef.current) {
-      const handleLoad = () => setIsLoading(false); // Hide loading once video is ready
+      const handleLoad = () => setIsLoading(false);
       videoRef.current.addEventListener("loadeddata", handleLoad);
       return () => {
         videoRef.current?.removeEventListener("loadeddata", handleLoad);
@@ -32,7 +32,7 @@ const VideoPlayer = () => {
   };
 
   const handleEnd = () => {
-    setShowVideo(false); // Reset to cover and play button after video ends
+    setShowVideo(false);
   };
 
   return (
@@ -66,24 +66,13 @@ const VideoPlayer = () => {
             ref={videoRef}
             className="w-full rounded-lg shadow-lg landscape-video"
             autoPlay
-            onEnded={handleEnd} // Show the cover again after video ends
+            onEnded={handleEnd}
           >
             <source src="/sampleVideo.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
         </div>
       )}
-      {/* Landscape rotation for phones */}
-      <style jsx>{`
-        @media (max-width: 768px) {
-          .landscape-video {
-            transform: rotate(90deg);
-            width: 100vh; /* Full height in landscape mode */
-            height: 100vw; /* Full width in landscape mode */
-            object-fit: cover;
-          }
-        }
-      `}</style>
     </div>
   );
 };
