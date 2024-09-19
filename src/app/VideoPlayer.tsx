@@ -1,12 +1,11 @@
-// app/VideoPlayer.tsx
-"use client"; // Mark this file as a Client Component
+"use client";
 
 import { useState, useRef } from "react";
 import { BsFillPlayCircleFill } from "react-icons/bs";
 
 const VideoPlayer = () => {
   const [showVideo, setShowVideo] = useState(false);
-  const videoRef = useRef(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   const handlePlay = () => {
     setShowVideo(true);
