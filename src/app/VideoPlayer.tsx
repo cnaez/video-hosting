@@ -2,12 +2,12 @@
 
 import { useState, useRef, useEffect } from "react";
 import { BsFillPlayCircleFill } from "react-icons/bs";
-import { ImSpinner2 } from "react-icons/im";
+import { ImSpinner2 } from "react-icons/im"; // For loading spinner
 
 const VideoPlayer = () => {
   const [showVideo, setShowVideo] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // Page loading state
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (videoRef.current) {
@@ -17,9 +17,9 @@ const VideoPlayer = () => {
         videoRef.current?.removeEventListener("loadeddata", handleLoad);
       };
     } else {
-      setIsLoading(false); // If videoRef is null, stop loading
+      setIsLoading(false);
     }
-  }, [videoRef]);
+  }, []);
 
   const handlePlay = () => {
     setShowVideo(true);
@@ -29,6 +29,10 @@ const VideoPlayer = () => {
         setIsLoading(false);
       });
     }
+  };
+
+  const handleEnd = () => {
+    setShowVideo(false); // Reset to cover and play button after video ends
   };
 
   return (
@@ -57,11 +61,29 @@ const VideoPlayer = () => {
           </button>
         </div>
       ) : (
-        <video ref={videoRef} className="w-full rounded-lg shadow-lg" autoPlay>
-          <source src="/sampleVideo.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
+        <div className="relative">
+          <video
+            ref={videoRef}
+            className="w-full rounded-lg shadow-lg landscape-video"
+            autoPlay
+            onEnded={handleEnd} // Show the cover again after video ends
+          >
+            <source src="/sampleVideo.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
       )}
+      {/* Landscape rotation for phones */}
+      <style jsx>{`
+        @media (max-width: 768px) {
+          .landscape-video {
+            transform: rotate(90deg);
+            width: 100vh; /* Full height in landscape mode */
+            height: 100vw; /* Full width in landscape mode */
+            object-fit: cover;
+          }
+        }
+      `}</style>
     </div>
   );
 };
